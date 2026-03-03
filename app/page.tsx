@@ -79,11 +79,10 @@ export default function Home() {
         typeof data.reply === "string"
           ? data.reply
           : typeof data.error === "string"
-          ? `Error: ${data.error}`
-          : "No reply received.";
+            ? `Error: ${data.error}`
+            : "No reply received.";
 
       const assistantMsg: Message = { role: "assistant", content: replyText };
-
       setMessages([...limitedMessages, assistantMsg].slice(-6));
     } catch {
       const assistantMsg: Message = {
@@ -99,7 +98,7 @@ export default function Home() {
   const bottomPanel = (
     <>
       {/* Chips */}
-      <div className="px-4 pt-3 pb-2">
+      <div className="pt-3 pb-2">
         <div className="flex gap-2 overflow-x-auto no-scrollbar">
           {chips.map((chip) => (
             <button
@@ -120,10 +119,10 @@ export default function Home() {
       </div>
 
       {/* Input */}
-      <div className="px-4 pb-4">
+      <div className="pb-4">
         <div className="flex gap-2">
           <input
-            className="flex-1 bg-gray-800 text-white border border-gray-700 rounded-xl px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60"
+            className="flex-1 min-w-0 bg-gray-800 text-white border border-gray-700 rounded-xl px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Tap chips or type..."
@@ -134,16 +133,13 @@ export default function Home() {
           />
           <button
             onClick={sendMessage}
-            className="bg-blue-600 text-white px-4 py-3 rounded-xl text-sm hover:bg-blue-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
+            className="shrink-0 bg-blue-600 text-white px-4 py-3 rounded-xl text-sm hover:bg-blue-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
             type="button"
             disabled={isLoading}
           >
             {isLoading ? "Sending..." : "Send"}
           </button>
         </div>
-
-        {/* Safe area padding for iPhone */}
-        <div className="h-[env(safe-area-inset-bottom)]" />
       </div>
     </>
   );
@@ -151,17 +147,15 @@ export default function Home() {
   return (
     <main className="bg-black">
       <div className="min-h-[100dvh] flex md:items-center md:justify-center">
-
         {/* Main container */}
         <div className="w-full min-h-[100dvh] md:min-h-0 md:h-[85vh] md:max-w-2xl bg-gray-900 md:shadow-lg md:rounded-xl flex flex-col md:border md:border-gray-700">
-
           {/* Header */}
           <div className="px-4 py-3 md:p-4 border-b border-gray-700 font-semibold text-lg text-white">
             🔥 Craving Checker
           </div>
 
           {/* Chat Area */}
-          <div className="flex-1 overflow-y-auto px-4 py-4 md:px-6 md:py-6 space-y-4 md:space-y-6 pb-40 md:pb-6">
+          <div className="flex-1 overflow-y-auto px-4 py-4 md:px-6 md:py-6 space-y-4 md:space-y-6 pb-44 md:pb-6">
             {messages.map((m, i) => (
               <div
                 key={i}
@@ -197,17 +191,22 @@ export default function Home() {
           </div>
 
           {/* Desktop bottom */}
-          <div className="hidden md:block border-t border-gray-800">
+          <div className="hidden md:block border-t border-gray-800 px-6">
             {bottomPanel}
           </div>
-
         </div>
 
-        {/* Mobile fixed bottom */}
-        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800">
+        {/* Mobile fixed bottom with iOS safe-area padding LEFT/RIGHT/BOTTOM */}
+        <div
+          className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800"
+          style={{
+            paddingLeft: "max(16px, env(safe-area-inset-left))",
+            paddingRight: "max(16px, env(safe-area-inset-right))",
+            paddingBottom: "env(safe-area-inset-bottom)",
+          }}
+        >
           {bottomPanel}
         </div>
-
       </div>
 
       <style jsx global>{`
