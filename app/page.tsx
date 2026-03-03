@@ -120,7 +120,7 @@ export default function Home() {
 
       {/* Input */}
       <div className="pb-4">
-        <div className="flex gap-2">
+        <div className="flex w-full gap-2">
           <input
             className="flex-1 min-w-0 bg-gray-800 text-white border border-gray-700 rounded-xl px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60"
             value={input}
@@ -131,13 +131,15 @@ export default function Home() {
               if (e.key === "Enter") sendMessage();
             }}
           />
+
+          {/* ✅ Mobile-friendly: smaller + allowed to shrink */}
           <button
             onClick={sendMessage}
-            className="shrink-0 bg-blue-600 text-white px-4 py-3 rounded-xl text-sm hover:bg-blue-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
+            className="bg-blue-600 text-white px-3 md:px-4 py-3 rounded-xl text-xs md:text-sm hover:bg-blue-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
             type="button"
             disabled={isLoading}
           >
-            {isLoading ? "Sending..." : "Send"}
+            {isLoading ? "..." : "Send"}
           </button>
         </div>
       </div>
@@ -191,18 +193,17 @@ export default function Home() {
           </div>
 
           {/* Desktop bottom */}
-          <div className="hidden md:block border-t border-gray-800 px-6">
-            {bottomPanel}
-          </div>
+          <div className="hidden md:block border-t border-gray-800 px-6">{bottomPanel}</div>
         </div>
 
-        {/* Mobile fixed bottom with iOS safe-area padding LEFT/RIGHT/BOTTOM */}
+        {/* ✅ Mobile fixed bottom: safe-area + box-sizing so it never overflows */}
         <div
           className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800"
           style={{
-            paddingLeft: "max(16px, env(safe-area-inset-left))",
-            paddingRight: "max(16px, env(safe-area-inset-right))",
-            paddingBottom: "env(safe-area-inset-bottom)",
+            boxSizing: "border-box",
+            paddingLeft: "calc(env(safe-area-inset-left) + 16px)",
+            paddingRight: "calc(env(safe-area-inset-right) + 16px)",
+            paddingBottom: "calc(env(safe-area-inset-bottom) + 8px)",
           }}
         >
           {bottomPanel}
